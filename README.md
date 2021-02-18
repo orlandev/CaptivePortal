@@ -129,9 +129,7 @@ Captive portal using NGINX, hostapd, create_ap and dnsmasq in debian 10
 Guide for [SSL-NGINX-DEBIAN](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-on-debian-10) 
 
 
-> Testing with IP 192.168.X.X FAIL CAPTIVE PORTAL
-> 
-> Testing with IP 10.45.0.1 FAIL CAPTIVE PORTAL
+> Testing with IP 192.168.X.X and 10.45.X.X FAIL CAPTIVE PORTAL in Samsung devices
 
 
 
