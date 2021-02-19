@@ -45,8 +45,8 @@ echo -e $ok_with_color"  DHCP-RANGE: "$dhcprange
 
 sudo apt install nginx hostapd dnsmasq net-tools python3-acme python3-certbot python3-mock python3-openssl python3-pkg-resources python3-pyparsing python3-zope.interface python3-certbot-nginx git make -y
 
-#git clone https://github.com/oblique/create_ap
-#make -C ./create_ap install
+git clone https://github.com/oblique/create_ap
+make -C ./create_ap install
 
 sudo cp -f _dnsmasq.conf /etc/dnsmasq.conf
 
