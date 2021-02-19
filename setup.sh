@@ -19,4 +19,8 @@ sudo cp -C ./_self-signed.conf /etc/nginx/snippets/self-signed.conf
 
 sudo cp -C ./_ssl-params.conf /etc/nginx/snippets/ssl-params.conf
 
-
+echo "Done!"
+echo "For start HOTSPOT: sudo create_ap -n wlo1 CAPTIVE_PORTAL --no-virt --no-dnsmasq --redirect-to-localhost  "
+echo "For set WIFI IP( dnsmasq fail if you dont set WIFI IP ADDRESS ): sudo ifconfig wlo1 200.200.200.1"
+echo "For start DNSMASQ: sudo systemctl start dnsmasq.service "
+echo "For start NGINX SERVER: sudo systemctl start nginx.service"
