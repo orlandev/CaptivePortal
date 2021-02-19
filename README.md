@@ -43,10 +43,40 @@ Captive portal using NGINX, hostapd, create_ap and dnsmasq in debian 10
 ## 6. OpenSSL strong DH group
 > While we are using OpenSSL, we should also create a strong Diffie-Hellman group, which is used in negotiating Perfect Forward Secrecy with clients. 
 
-    sudo openssl dhparam -out /etc/nginx/dhparam.pem 4096
+    sudo openssl dhparam -out /etc/nginx/dhparam.pem 4096    
 
+## 6.1 Self Signed
+    create file self-signed.con in /etc/nginx/snippets/self-signed.conf
 
-## 5. Configuring Nginx to Use SSL
+    and tape this:
+
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+    create file ssl-params.conf /etc/nginx/snippets/ssl-params.conf
+
+    and tape this:
+
+        ssl_protocols TLSv1.2;
+        ssl_prefer_server_ciphers on;
+        ssl_dhparam /etc/nginx/dhparam.pem;
+        ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;
+        ssl_ecdh_curve secp384r1; # Requires nginx >= 1.1.0
+        ssl_session_timeout  10m;
+        ssl_session_cache shared:SSL:10m;
+        ssl_session_tickets off; # Requires nginx >= 1.5.9
+        ssl_stapling on; # Requires nginx >= 1.3.7
+        ssl_stapling_verify on; # Requires nginx => 1.3.7
+        resolver 200.200.200.1 200.200.200.1 valid=300s;
+        resolver_timeout 5s;
+        # Disable strict transport security for now. You can uncomment the following
+        # line if you understand the implications.
+        # add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
+        add_header X-Frame-Options DENY;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+
+## 7. Configuring Nginx to Use SSL
  
     sudo nano /etc/nginx/sites-enabled/default
 
@@ -107,20 +137,20 @@ Captive portal using NGINX, hostapd, create_ap and dnsmasq in debian 10
 }	
 
 
-# 7. Create Hotspot using create_ap
+# 8. Create Hotspot using create_ap
 
     sudo create_ap -n wlo1 CAPTIVE_PORTAL --no-virt --no-dnsmasq --redirect-to-localhost
 
-# 8. Set WIFI DEVICE IP
+# 9. Set WIFI DEVICE IP
 > if no set this then DNSMASQ crash
 > 
     sudo ifconfig wlo1 200.200.200.1
 
-# 9. Start DNSMASQ
+# 10. Start DNSMASQ
 
     sudo systemctl start dnsmasq.service 
 
-# 10. Start NGINX SERVER
+# 11. Start NGINX SERVER
 
     sudo systemctl start nginx.service
 
